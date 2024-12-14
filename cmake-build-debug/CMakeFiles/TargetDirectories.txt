@@ -1,0 +1,3 @@
+C:/Users/User/OneDrive/Рабочий стол/Учёба/Управление данными/База_данных_c++/cmake-build-debug/CMakeFiles/__c__.dir
+C:/Users/User/OneDrive/Рабочий стол/Учёба/Управление данными/База_данных_c++/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/User/OneDrive/Рабочий стол/Учёба/Управление данными/База_данных_c++/cmake-build-debug/CMakeFiles/rebuild_cache.dir
