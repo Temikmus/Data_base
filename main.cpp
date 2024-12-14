@@ -102,10 +102,57 @@ void create_base() {
     }
     // Предобработка файлов
     preprocess_file(directory + "/" + folder_name + "/hash_id.bin", 20, 17);
-    preprocess_file(directory + "/" + folder_name + "/hash_name.bin", 20, 100 + 8 * 10 - 1);
-    preprocess_file(directory + "/" + folder_name + "/hash_date.bin", 20, 11 + 8 * 10 - 1);
-    preprocess_file(directory + "/" + folder_name + "/hash_phone.bin", 20, 12 + 8 * 10 - 1);
-    preprocess_file(directory + "/" + folder_name + "/hash_mail.bin", 20, 100 + 8 * 10 - 1);
+    preprocess_file(directory + "/" + folder_name + "/hash_name.bin", 20, 100 + 8 * 1000 - 1);
+    preprocess_file(directory + "/" + folder_name + "/hash_date.bin", 20, 11 + 8 * 1000 - 1);
+    preprocess_file(directory + "/" + folder_name + "/hash_phone.bin", 20, 12 + 8 * 1000 - 1);
+    preprocess_file(directory + "/" + folder_name + "/hash_mail.bin", 20, 100 + 8 * 1000 - 1);
+}
+
+// Функция для экспорта данных из shifts.bin в shifts.csv
+void export_to_csv(const std::string& binary_file, const std::string& csv_file) {
+    // Открываем бинарный файл для чтения
+    std::ifstream bin_file(binary_file, std::ios::binary);
+    if (!bin_file.is_open()) {
+        std::cerr << "Не удалось открыть файл: " << binary_file << std::endl;
+        return;
+    }
+
+    // Открываем CSV-файл для записи
+    std::ofstream csv_out(csv_file);
+    if (!csv_out.is_open()) {
+        std::cerr << "Не удалось создать CSV-файл: " << csv_file << std::endl;
+        return;
+    }
+
+    // Размер строки в бинарном файле
+    const size_t line_size = 231;  // Включает id, fio, date, phone, email
+    char buffer[line_size] = {0};
+    csv_out<<"ID,FIO,DATE,PHONE,EMAIL\n";
+    // Читаем строки из бинарного файла и записываем их в CSV
+    while (bin_file.read(buffer, line_size)) {
+        std::string id(buffer, 10);
+        std::string fio(buffer + 10, 100);
+        std::string date(buffer + 10 + 100, 10);
+        std::string phone(buffer + 10 + 100 + 10, 11);
+        std::string email(buffer + 10 + 100 + 10 + 11, 100);
+
+        // Убираем лишние пробелы и нули
+        id.erase(id.find_last_not_of('\0') + 1);
+        fio.erase(fio.find_last_not_of('\0') + 1);
+        date.erase(date.find_last_not_of('\0') + 1);
+        phone.erase(phone.find_last_not_of('\0') + 1);
+        email.erase(email.find_last_not_of('\0') + 1);
+        if (id[0]!='\0'){
+            // Записываем строку в CSV-файл
+            csv_out << id << "," << fio << "," << date << "," << phone << "," << email << "\n";
+        }
+    }
+
+    // Закрываем файлы
+    bin_file.close();
+    csv_out.close();
+
+    std::cout << "Экспорт завершён: данные записаны в " << csv_file << std::endl;
 }
 
 int main() {
@@ -116,11 +163,15 @@ int main() {
     std::string base_file = choose_file();
     Data_base base(base_file);
     if (base.open_file()) {
-        base.add_line("123,Artemy Muslin Mich,24.07.2005,+79302854508,artemmuslin@gmail.com");
+        //base.add_line("123,Artemy Muslin Mich,24.07.2005,+79302854508,artemmuslin@gmail.com");
         //base.delete_line_by_name("Alexey Smirnov");
         //base.delete_line_by_mail("artemmuslin@gmail.com");
-        base.edit_name("131", "Chuspan durak");
-        base.read_base();
+        //base.edit_name("131", "Chuspan durak");
+        //base.read_base();
+        const std::string binary_file = base.get_path_shifts();
+        std::string name = base.get_path_main();
+        const std::string csv_file = name.erase(name.rfind(".")) + "/shifts.csv";
+        export_to_csv(binary_file, csv_file);
     } else {
         std::cout << "Не удалось открыть файл " << base_file << std::endl;
     }

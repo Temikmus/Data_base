@@ -12,7 +12,7 @@
 #include "prepoccess.h"
 
 #pragma once
-
+namespace fs = std::filesystem;
 class Data_base {
 private:
     std::string main_file_name;
@@ -43,6 +43,14 @@ public:
     void add_line(const std::string& line);
     // Прочитать содержимое базы данных
     void read_base();
+
+    std::string get_path_shifts(){
+        return shifts_file_name;
+    }
+
+    std::string get_path_main(){
+        return main_file_name;
+    }
 
     void change_line_at_shifts_bin(const std::string& id, const std::string& fio, const std::string& date,
                                               const std::string& phone, const std::string& email, size_t offset);
@@ -79,6 +87,5 @@ public:
     void add_line_at_hash_id_bin(const std::string& id, const std::string& number_of_line_in_shifts_bin);
     void add_line_at_shifts_bin(const std::string& id,const std::string& fio, const std::string& date, const std::string& phone, const std::string& email);
 private:
-
 
 };

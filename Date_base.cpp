@@ -44,7 +44,7 @@ Data_base::Data_base(const std::string& name) {
     hash_date_file_name = new_name + "/hash_date.bin";
     hash_phone_file_name = new_name + "/hash_phone.bin";
     hash_mail_file_name = new_name + "/hash_mail.bin";
-    total_lines = 20;
+    total_lines = 1750000;
 }
 
 // Открытие файлов в бинарном режиме
@@ -71,16 +71,16 @@ void Data_base::clear_file() {
     preprocess_file(hash_id_file_name, total_lines, 17);
 
     hash_name_file.close(); // Закрыть файл, если он открыт
-    preprocess_file(hash_name_file_name, total_lines, 100 + 8 * 10 - 1);
+    preprocess_file(hash_name_file_name, total_lines, 100 + 8 * 1000 - 1);
 
     hash_date_file.close(); // Закрыть файл, если он открыт
-    preprocess_file(hash_date_file_name, total_lines, 11 + 8 * 10 - 1);
+    preprocess_file(hash_date_file_name, total_lines, 11 + 8 * 1000 - 1);
 
     hash_phone_file.close(); // Закрыть файл, если он открыт
-    preprocess_file(hash_phone_file_name, total_lines, 12 + 8 * 10 - 1);
+    preprocess_file(hash_phone_file_name, total_lines, 12 + 8 * 1000 - 1);
 
     hash_mail_file.close(); // Закрыть файл, если он открыт
-    preprocess_file(hash_mail_file_name, total_lines, 100 + 8 * 10 - 1);
+    preprocess_file(hash_mail_file_name, total_lines, 100 + 8 * 1000 - 1);
 }
 
 void Data_base::close_file() {
@@ -400,7 +400,7 @@ void Data_base::add_line_at_hash_name_bin(const std::string& name, const std::st
     std::cout<<" add_line_at_hash_name_bin \n";
     int line_number = hash_str(name)%total_lines;
     // Размер строки
-    size_t line_size = 100 + 8 * 10 - 1;
+    size_t line_size = 100 + 8 * 1000 - 1;
 
     // Начальное смещение
     size_t offset = (line_number - 1) * line_size;
@@ -512,7 +512,7 @@ void Data_base::add_line_at_hash_date_bin(const std::string& date, const std::st
     std::vector<std::string> splited_date = split(date, '.');
     int line_number = hash_date(std::stoi(splited_date[2]), std::stoi(splited_date[1]), std::stoi(splited_date[0]))%total_lines;
     // Размер строки
-    size_t line_size = 11 + 8 * 10 - 1;
+    size_t line_size = 11 + 8 * 1000 - 1;
 
     // Начальное смещение
     size_t offset = (line_number - 1) * line_size;
@@ -623,7 +623,7 @@ void Data_base::add_line_at_hash_phone_bin(const std::string& phone, const std::
     std::cout<<" add_line_at_hash_phone_bin \n";
     int line_number = hash_int(std::stoll(phone))%total_lines;
     // Размер строки
-    size_t line_size = 12 + 8 * 10 - 1;
+    size_t line_size = 12 + 8 * 1000 - 1;
 
     // Начальное смещение
     size_t offset = (line_number - 1) * line_size;
@@ -733,7 +733,7 @@ void Data_base::add_line_at_hash_mail_bin(const std::string& mail, const std::st
     }
     int line_number = hash_str(mail)%total_lines;
     // Размер строки
-    size_t line_size = 100 + 8 * 10 - 1;
+    size_t line_size = 100 + 8 * 1000 - 1;
     std::cout<<" add_line_at_hash_mail_bin \n";
     // Начальное смещение
     size_t offset = (line_number - 1) * line_size;
@@ -928,7 +928,7 @@ std::pair<std::vector<std::string>, int> Data_base::find_line_numbers_for_name(c
     }
 
     // Размер строки
-    size_t line_size = 100 + 8 * 10 - 1;
+    size_t line_size = 100 + 8 * 1000 - 1;
 
     // Буфер для чтения строки
     char buffer[line_size] = {0};
@@ -1022,7 +1022,7 @@ std::pair<std::vector<std::string>, int> Data_base::find_line_numbers_for_date(c
     }
 
     // Размер строки
-    size_t line_size = 11 + 8 * 10 - 1;
+    size_t line_size = 11 + 8 * 1000 - 1;
 
     // Буфер для чтения строки
     char buffer[line_size] = {0};
@@ -1118,7 +1118,7 @@ std::pair<std::vector<std::string>, int> Data_base::find_line_numbers_for_phone(
     }
 
     // Размер строки
-    size_t line_size = 12 + 8 * 10 - 1;
+    size_t line_size = 12 + 8 * 1000 - 1;
 
     // Буфер для чтения строки
     char buffer[line_size] = {0};
@@ -1213,7 +1213,7 @@ std::pair<std::vector<std::string>, int> Data_base::find_line_numbers_for_mail(c
     }
 
     // Размер строки
-    size_t line_size = 100 + 8 * 10 - 1;
+    size_t line_size = 100 + 8 * 1000 - 1;
 
     // Буфер для чтения строки
     char buffer[line_size] = {0};
@@ -1438,7 +1438,7 @@ void Data_base::delete_line_from_hash_name(int number_line,const std::string& na
         std::cerr << "Не удалось открыть файл!" << std::endl;
         return;
     }
-    size_t line_size = 100 + 8 * 10 - 1;
+    size_t line_size = 100 + 8 * 1000 - 1;
 // Буфер для чтения строки
     char buffer[line_size] = {0};
 // Начальное смещение
@@ -1482,7 +1482,7 @@ void Data_base::delete_line_from_hash_date(int number_line,const std::string& da
         std::cerr << "Не удалось открыть файл!" << std::endl;
         return;
     }
-    size_t line_size = 11 + 8 * 10 - 1;
+    size_t line_size = 11 + 8 * 1000 - 1;
 // Буфер для чтения строки
     char buffer[line_size] = {0};
 // Начальное смещение
@@ -1526,7 +1526,7 @@ void Data_base::delete_line_from_hash_phone(int number_line,const std::string& p
         std::cerr << "Не удалось открыть файл!" << std::endl;
         return;
     }
-    size_t line_size = 12 + 8 * 10 - 1;
+    size_t line_size = 12 + 8 * 1000 - 1;
 // Буфер для чтения строки
     char buffer[line_size] = {0};
 // Начальное смещение
@@ -1570,7 +1570,7 @@ void Data_base::delete_line_from_hash_mail(int number_line,const std::string& ma
         std::cerr << "Не удалось открыть файл!" << std::endl;
         return;
     }
-    size_t line_size = 100 + 8 * 10 - 1;
+    size_t line_size = 100 + 8 * 1000 - 1;
 // Буфер для чтения строки
     char buffer[line_size] = {0};
 // Начальное смещение
